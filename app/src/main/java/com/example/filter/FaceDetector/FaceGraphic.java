@@ -27,6 +27,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
 
     private Paint RedPaint;
     private Paint GreenPaint;
+    private Paint BlushPaint;
     private static final float STROKE_WIDTH = 5.0f;
     static final String TAG = "FaceGraphic";
     private volatile Face face;
@@ -62,23 +63,14 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         RedPaint.setStyle(Paint.Style.STROKE);
         RedPaint.setStrokeWidth(STROKE_WIDTH);
 
-    }
+        BlushPaint = new Paint();
+        BlushPaint.setColor(Color.RED);
+        BlushPaint.setAlpha(100);
+        BlushPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        BlushPaint.setStrokeWidth(100f);
 
-
-    public void sendmessage(String logthis) {
-        //Log.wtf("graphics", logthis        );
-        /*  until I get the main code working again.
-        Bundle b = new Bundle();
-        b.putString("logthis", logthis);
-        Message msg = handler.obtainMessage();
-        msg.setData(b);
-        msg.arg1 = 1;
-        msg.what = 1;  //so the empty message is not used!
-        // System.out.println("About to Send message"+ logthis);
-        handler.sendMessage(msg);
-        // System.out.println("Sent message"+ logthis);
-         */
     }
+    
     /**
      * Draws the face annotations for position on the supplied canvas.
      */
@@ -92,8 +84,8 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         // Draws a circle at the position of the detected face, with the face's track id below.
         float x = translateX(face.getBoundingBox().centerX());
         float y = translateY(face.getBoundingBox().centerY());
-        canvas.drawCircle(x, y, FACE_POSITION_RADIUS, facePositionPaint);
-        canvas.drawText("id: " + face.getTrackingId(), x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint);
+//        canvas.drawCircle(x, y, FACE_POSITION_RADIUS, facePositionPaint);
+//        canvas.drawText("id: " + face.getTrackingId(), x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint);
 
         // Draws a bounding box around the face.
         float xOffset = scale(face.getBoundingBox().width() / 2.0f);
@@ -102,12 +94,8 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         float top = y - yOffset;
         float right = x + xOffset;
         float bottom = y + yOffset;
-        canvas.drawRect(left, top, right, bottom, boxPaint);
+//        canvas.drawRect(left, top, right, bottom, boxPaint);
 
-
-        sendmessage("Smile: " + face.getSmilingProbability() +
-                " Left: " + face.getLeftEyeOpenProbability() +
-                " Right:" + face.getRightEyeOpenProbability());
 
         float cx, cy;
         float lx = 0f, ly = 0f, mx = 0, my = 0, rx = 0, ry = 0;
@@ -135,7 +123,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
             cy = translateY(rightEye.getPosition().y);
             if (face.getRightEyeOpenProbability() != null) {
                 if (face.getRightEyeOpenProbability() > .75) {  //open, so show circle
-                    canvas.drawCircle(cx, cy, 10, GreenPaint);
+                    canvas.drawCircle(cx, cy, 20, GreenPaint);
                 } else { //closed, so show x.
                     canvas.drawLine(cx - xl, cy - xl, cx + xl, cy + xl, RedPaint);
                     canvas.drawLine(cx - xl, cy + xl, cx + xl, cy - xl, RedPaint);
@@ -182,30 +170,30 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         }
 
 
-        FaceLandmark rightear = face.getLandmark(FaceLandmark.RIGHT_EAR);
-        if (rightear != null && rightear.getPosition() != null) {
-            canvas.drawCircle(
-                    translateX(rightear.getPosition().x),
-                    translateY(rightear.getPosition().y),
-                    FACE_POSITION_RADIUS,
-                    facePositionPaint);
-        }
-        FaceLandmark leftear = face.getLandmark(FaceLandmark.LEFT_EAR);
-        if (leftear != null && leftear.getPosition() != null) {
-            canvas.drawCircle(
-                    translateX(leftear.getPosition().x),
-                    translateY(leftear.getPosition().y),
-                    FACE_POSITION_RADIUS,
-                    facePositionPaint);
-        }
+//        FaceLandmark rightear = face.getLandmark(FaceLandmark.RIGHT_EAR);
+//        if (rightear != null && rightear.getPosition() != null) {
+//            canvas.drawCircle(
+//                    translateX(rightear.getPosition().x),
+//                    translateY(rightear.getPosition().y),
+//                    FACE_POSITION_RADIUS,
+//                    facePositionPaint);
+//        }
+//        FaceLandmark leftear = face.getLandmark(FaceLandmark.LEFT_EAR);
+//        if (leftear != null && leftear.getPosition() != null) {
+//            canvas.drawCircle(
+//                    translateX(leftear.getPosition().x),
+//                    translateY(leftear.getPosition().y),
+//                    FACE_POSITION_RADIUS,
+//                    facePositionPaint);
+//        }
 
         FaceLandmark leftCheek = face.getLandmark(FaceLandmark.LEFT_CHEEK);
         if (leftCheek != null && leftCheek.getPosition() != null) {
             canvas.drawCircle(
                     translateX(leftCheek.getPosition().x),
                     translateY(leftCheek.getPosition().y),
-                    FACE_POSITION_RADIUS,
-                    facePositionPaint);
+                    100f,
+                    BlushPaint);
         }
         FaceLandmark rightCheek =
                 face.getLandmark(FaceLandmark.RIGHT_CHEEK);
@@ -213,8 +201,18 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
             canvas.drawCircle(
                     translateX(rightCheek.getPosition().x),
                     translateY(rightCheek.getPosition().y),
-                    FACE_POSITION_RADIUS,
-                    facePositionPaint);
+                    100f,
+                    BlushPaint);
+        }
+
+        FaceLandmark noseBase =
+                face.getLandmark(FaceLandmark.NOSE_BASE);
+        if (noseBase != null && noseBase.getPosition() != null) {
+            canvas.drawCircle(
+                    translateX(rightCheek.getPosition().x),
+                    translateY(rightCheek.getPosition().y),
+                    100f,
+                    BlushPaint);
         }
     }
 }

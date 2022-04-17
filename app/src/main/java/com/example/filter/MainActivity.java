@@ -1,12 +1,19 @@
 package com.example.filter;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +62,22 @@ implements OnRequestPermissionsResultCallback, CompoundButton.OnCheckedChangeLis
         //keep the camera switch.
         ToggleButton facingSwitch = findViewById(R.id.facing_switch);
         facingSwitch.setOnCheckedChangeListener(this);
+
+        Button takePicture = findViewById(R.id.take_picture);
+        takePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                try{
+                    Intent intent = new Intent();
+                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Toast.makeText(MainActivity.this, "Picture button", Toast.LENGTH_SHORT).show();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         //check for permissions and start the face recognition.
         if (allPermissionsGranted()) {
