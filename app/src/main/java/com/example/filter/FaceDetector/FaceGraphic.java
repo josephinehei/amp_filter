@@ -22,7 +22,9 @@ import com.google.mlkit.vision.face.FaceLandmark;
 
 import com.example.filter.GraphicOverlay;
 
-
+/**
+ * Draws on the face to create the graphic overlay or filter
+ */
 public class FaceGraphic extends GraphicOverlay.Graphic {
 
     private static final float FACE_POSITION_RADIUS = 4.0f;
@@ -42,7 +44,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
 
     // protected Handler handler;
 
-
+    //assigning the colors and stroke/fill types to be used later
     public FaceGraphic(GraphicOverlay overlay, Face face) {
         super(overlay);
 

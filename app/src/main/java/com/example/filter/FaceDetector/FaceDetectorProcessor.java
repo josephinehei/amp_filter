@@ -22,6 +22,9 @@ import com.google.mlkit.vision.face.FaceLandmark;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Detects the face and assigns landmarks to be used by the FaceGraphic Class
+ */
 public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>> {
     private static final String TAG = "FaceDetectorProcessor";
 

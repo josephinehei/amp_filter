@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 /**
- * This is the class for the Ship.
+ * This is the class for the Clown Hat. To add the bitmap object.
  */
 
 public class objClown extends obj {
